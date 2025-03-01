@@ -1,8 +1,6 @@
 "use client";
 
-import { signUpUser } from "@/lib/actions";
 import styles from "./page.module.css";
-import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
