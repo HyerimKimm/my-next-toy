@@ -1,6 +1,17 @@
+"use client";
+
+import { signUpUser } from "@/lib/actions";
 import styles from "./page.module.css";
+import { useFormState } from "react-dom";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  function handleSignUpClick() {
+    router.push(`/signup`);
+  }
+
   return (
     <div className={styles.page}>
       <form className={styles.form}>
@@ -25,7 +36,13 @@ export default function LoginPage() {
         </label>
         <div className={styles.buttons_wrap}>
           <button className={styles.login_button}>로그인</button>
-          <button className={styles.sign_up_button}>회원가입</button>
+          <button
+            type="button"
+            className={styles.sign_up_button}
+            onClick={handleSignUpClick}
+          >
+            회원가입
+          </button>
         </div>
       </form>
     </div>
