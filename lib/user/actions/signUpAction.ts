@@ -1,17 +1,18 @@
 "use server";
 
 import dayjs from "dayjs";
-import { saveUser } from "./users";
+import { saveUser } from "../db/saveUser";
 
 type CreateUserType = {
   email: string;
   password: string;
+  passwordCheck: string;
   username: string;
-  created_date: string;
+  createdDate: string;
 };
 
 export async function signUpUser(
-  prevState: { message: string },
+  prevState: { errorCode: string },
   formData: FormData
 ) {
   try {
@@ -19,46 +20,62 @@ export async function signUpUser(
 
     const email = formData.get("email") as string | null;
     const password = formData.get(`password`) as string | null;
+    const passwordCheck = formData.get(`passwordCheck`) as string | null;
     const username = formData.get(`username`) as string | null;
 
     if (!email || email.trim() === "" || !email.includes("@")) {
       return {
         success: false,
-        message: "이메일을 확인해 주세요.",
+        errorCode: "email",
       };
     }
 
     if (!password || password.trim() === "") {
       return {
         success: false,
-        message: "비밀번호를 확인해 주세요.",
+        errorCode: "password",
+      };
+    }
+
+    if (!passwordCheck || passwordCheck.trim() === "") {
+      return {
+        success: false,
+        errorCode: "passwordCheck",
+      };
+    }
+
+    if (password !== passwordCheck) {
+      return {
+        success: false,
+        errorCode: "passwordNotSameAsPasswordCheck",
       };
     }
 
     if (!username || username.trim() === "") {
       return {
         success: false,
-        message: "이름을 확인해 주세요.",
+        errorCode: "username",
       };
     }
 
     const user: CreateUserType = {
       email: email,
       password: password,
+      passwordCheck: passwordCheck,
       username: username,
-      created_date: dayjs().format(`YYYY-MM-DD HH:mm:ss`),
+      createdDate: dayjs().format(`YYYY-MM-DD HH:mm:ss`),
     };
 
     await saveUser(user);
 
     return {
       success: true,
-      message: "회원가입 완료!",
+      errorCode: "",
     };
   } catch (e) {
     return {
       success: false,
-      message: "회원가입 실패",
+      errorCode: "any",
     };
   }
 }

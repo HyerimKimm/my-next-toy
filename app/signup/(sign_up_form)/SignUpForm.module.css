@@ -28,6 +28,11 @@
   padding: 0.5rem;
 }
 
+.input_wrap > .error_text {
+  color: rgb(255, 153, 153);
+  font-size: 12px;
+}
+
 .buttons_wrap {
   width: 100%;
   display: flex;
