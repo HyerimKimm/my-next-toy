@@ -21,20 +21,23 @@ export async function signUpUser(
     const password = formData.get(`password`) as string | null;
     const username = formData.get(`username`) as string | null;
 
-    if (!email || !(email.trim() === "" || !email.includes("@"))) {
+    if (!email || email.trim() === "" || !email.includes("@")) {
       return {
+        success: false,
         message: "이메일을 확인해 주세요.",
       };
     }
 
-    if (!password || !(password.trim() === "")) {
+    if (!password || password.trim() === "") {
       return {
+        success: false,
         message: "비밀번호를 확인해 주세요.",
       };
     }
 
-    if (!username || !(username.trim() === "")) {
+    if (!username || username.trim() === "") {
       return {
+        success: false,
         message: "이름을 확인해 주세요.",
       };
     }
@@ -48,9 +51,13 @@ export async function signUpUser(
 
     await saveUser(user);
 
-    return { message: "회원가입 완료!" };
+    return {
+      success: true,
+      message: "회원가입 완료!",
+    };
   } catch (e) {
     return {
+      success: false,
       message: "회원가입 실패",
     };
   }

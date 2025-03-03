@@ -2,11 +2,14 @@
 
 import { useActionState } from "react";
 import styles from "./SignUpForm.module.css";
-import { signUpUser } from "@/lib/actions";
+import { signUpUser } from "@/lib/user/signUpAction";
 import SubmitButton from "./(submit_button)/SubmitButton";
 
 export default function SignUpForm() {
-  const [state, formAction] = useActionState(signUpUser, { message: "" });
+  const [state, formAction] = useActionState(signUpUser, {
+    success: true,
+    message: "",
+  });
 
   return (
     <form className={styles.form} action={formAction}>
